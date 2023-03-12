@@ -11,7 +11,7 @@ require (
 	github.com/google/uuid v1.3.0
 	github.com/huaweicloud/huaweicloud-sdk-go-obs v3.22.11+incompatible
 	github.com/jinzhu/copier v0.3.5
-	github.com/limeschool/gin v0.0.19
+	github.com/limeschool/gin v0.0.20
 	github.com/minio/minio-go/v7 v7.0.49
 	github.com/mojocn/base64Captcha v1.3.5
 	github.com/qiniu/go-sdk/v7 v7.14.0
@@ -149,4 +149,4 @@ require (
 	modernc.org/sqlite v1.21.0 // indirect
 )
 
-replace github.com/limeschool/gin v0.0.19 => ../src/github.com/limeschool/gin
+//replace github.com/limeschool/gin v0.0.19 => ../src/github.com/limeschool/gin
