@@ -43,6 +43,38 @@ func NewJwt(v *viper.Viper) {
 	return
 }
 
+func (ja *JwtAuthApplication) CompareToken(ctx *gin.Context, userId int64, token string) error {
+	if !ja.UniqueDevice {
+		return nil
+	}
+	storeToken, err := ctx.Redis(ja.UniqueCache).Get(ctx, ja.Md5UUID(fmt.Sprint(userId))).Result()
+	if err != nil {
+		return errors.TokenDataError
+	}
+
+	if storeToken != ja.Md5UUID(token) {
+		return errors.DulDeviceLoginError
+	}
+	return nil
+}
+
+func (ja *JwtAuthApplication) StoreToken(ctx *gin.Context, userId int64, token string) error {
+	if !ja.UniqueDevice {
+		return nil
+	}
+	key := ja.Md5UUID(fmt.Sprint(userId))
+	t := time.Duration(ja.Expire) * time.Second
+	return ctx.Redis(ja.UniqueCache).Set(ctx, key, ja.Md5UUID(token), t).Err()
+}
+
+func (ja *JwtAuthApplication) ClearToken(ctx *gin.Context, userId int64) error {
+	if !ja.UniqueDevice {
+		return nil
+	}
+	key := ja.Md5UUID(fmt.Sprint(userId))
+	return ctx.Redis(ja.UniqueCache).Del(ctx, key).Err()
+}
+
 func (ja *JwtAuthApplication) Auth() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		if !ja.Enable {
@@ -79,14 +111,8 @@ func (ja *JwtAuthApplication) Auth() gin.HandlerFunc {
 
 		// 是否开启唯一设备登陆
 		if ja.UniqueDevice {
-			storeToken, err := ctx.Redis(ja.UniqueCache).Get(ctx, ja.uuid(fmt.Sprint(metadata.UserID))).Result()
-			if err != nil {
-				ctx.RespError(errors.TokenDataError)
-				return
-			}
-
-			if storeToken != token {
-				ctx.RespError(errors.DulDeviceLoginError)
+			if err = ja.CompareToken(ctx, metadata.UserID, token); err != nil {
+				ctx.RespError(err)
 				return
 			}
 		}
@@ -134,7 +160,7 @@ func (ja *JwtAuthApplication) parseToken(token string) (map[string]any, error) {
 	return m, nil
 }
 
-func (ja *JwtAuthApplication) uuid(id string) string {
+func (ja *JwtAuthApplication) Md5UUID(id string) string {
 	return fmt.Sprintf("%x", md5.Sum([]byte(id)))
 }
 
@@ -151,22 +177,19 @@ func (ja *JwtAuthApplication) CreateToken(ctx *gin.Context, metadata *meta.Metad
 		return "", err
 	}
 
-	if ja.UniqueDevice {
-		uuid := ja.uuid(fmt.Sprint(metadata.UserID))
-		err = ctx.Redis(ja.UniqueCache).Set(ctx, uuid, metadata.String(), time.Duration(ja.Expire)*time.Second).Err()
-	}
-
-	return token, err
+	return token, ja.StoreToken(ctx, metadata.UserID, token)
 }
 
-func (ja *JwtAuthApplication) IsExpired(ctx *gin.Context) bool {
+func (ja *JwtAuthApplication) MapClaimsAndExpired(ctx *gin.Context) (any, bool, bool) {
 	var claims jwt.MapClaims
 	token := ctx.Request.Header.Get(ja.Header)
 	_, _ = jwt.ParseWithClaims(token, &claims, func(token *jwt.Token) (interface{}, error) {
 		return []byte(ja.Secret), nil
 	})
 	if claims == nil {
-		return true
+		return nil, true, true
 	}
-	return time.Now().Unix()-int64(claims["iat"].(float64)) > ja.MaxExpire
+	isMaxExpired := time.Now().Unix()-int64(claims["iat"].(float64)) > ja.MaxExpire
+	isExpired := time.Now().Unix()-int64(claims["iat"].(float64)) > ja.Expire
+	return claims[consts.JwtMapClaims], isExpired, isMaxExpired
 }

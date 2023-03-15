@@ -46,6 +46,7 @@ func UseSystemRouter(root *gin.RouterGroup) {
 
 		// 用户其他操作
 		api.POST("/user/login", system.UserLogin)
+		api.POST("/user/logout", system.UserLogout)
 		api.POST("/token/refresh", system.RefreshToken)
 		api.GET("/login/log", system.LoginLog)
 	}

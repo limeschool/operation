@@ -30,7 +30,7 @@ func NewCaptchaStore(ctx *gin.Context) *captchaStore {
 }
 
 func (s *captchaStore) Set(id string, value string) error {
-	return s.Redis.Set(context.Background(), id, value, 10*time.Minute).Err()
+	return s.Redis.Set(context.Background(), id, value, 3*time.Minute).Err()
 }
 
 func (s *captchaStore) Get(id string, clear bool) string {

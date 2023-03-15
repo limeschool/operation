@@ -4,22 +4,22 @@ import "github.com/limeschool/gin"
 
 var (
 	//基础相关
-	ParamsError         = &gin.CustomError{Code: 100002, Msg: "参数验证失败"}
-	AssignError         = &gin.CustomError{Code: 100003, Msg: "数据赋值失败"}
-	DBError             = &gin.CustomError{Code: 100004, Msg: "数据库操作失败"}
-	DBNotFoundError     = &gin.CustomError{Code: 100005, Msg: "未查询到指定数据"}
-	UserNotFoundError   = &gin.CustomError{Code: 100006, Msg: "账号不存在"}
-	UserDisableError    = &gin.CustomError{Code: 100007, Msg: "账号已被禁用"}
-	PasswordError       = &gin.CustomError{Code: 100008, Msg: "账号密码错误"}
-	RsaPasswordError    = &gin.CustomError{Code: 100009, Msg: "非法账号密码"}
-	IpLimitLoginError   = &gin.CustomError{Code: 100010, Msg: "当前设备登陆错误次数过多,今日已被限制登陆"}
-	UserLimitLoginError = &gin.CustomError{Code: 100010, Msg: "当前账号登陆错误次数过多,已被限制登陆"}
-	SuperAdminEditError = &gin.CustomError{Code: 100011, Msg: "超级管理员不允许修改"}
-	SuperAdminDelError  = &gin.CustomError{Code: 100012, Msg: "超级管理员不允许删除"}
-	RoleDisableError    = &gin.CustomError{Code: 1000013, Msg: "账户角色已被禁用"}
-	PasswordExpireError = &gin.CustomError{Code: 1000014, Msg: "登陆密码时效已过期"}
-	CaptchaError        = &gin.CustomError{Code: 1000015, Msg: "验证码错误"}
-
+	ParamsError             = &gin.CustomError{Code: 100002, Msg: "参数验证失败"}
+	AssignError             = &gin.CustomError{Code: 100003, Msg: "数据赋值失败"}
+	DBError                 = &gin.CustomError{Code: 100004, Msg: "数据库操作失败"}
+	DBNotFoundError         = &gin.CustomError{Code: 100005, Msg: "未查询到指定数据"}
+	UserNotFoundError       = &gin.CustomError{Code: 100006, Msg: "账号不存在"}
+	UserDisableError        = &gin.CustomError{Code: 100007, Msg: "账号已被禁用"}
+	PasswordError           = &gin.CustomError{Code: 100008, Msg: "账号密码错误"}
+	RsaPasswordError        = &gin.CustomError{Code: 100009, Msg: "非法账号密码"}
+	IpLimitLoginError       = &gin.CustomError{Code: 100010, Msg: "当前设备登陆错误次数过多,今日已被限制登陆"}
+	UserLimitLoginError     = &gin.CustomError{Code: 100010, Msg: "当前账号登陆错误次数过多,已被限制登陆"}
+	SuperAdminEditError     = &gin.CustomError{Code: 100011, Msg: "超级管理员不允许修改"}
+	SuperAdminDelError      = &gin.CustomError{Code: 100012, Msg: "超级管理员不允许删除"}
+	RoleDisableError        = &gin.CustomError{Code: 1000013, Msg: "账户角色已被禁用"}
+	PasswordExpireError     = &gin.CustomError{Code: 1000014, Msg: "登陆密码时效已过期"}
+	CaptchaError            = &gin.CustomError{Code: 1000015, Msg: "验证码错误"}
+	RefreshActiveTokenError = &gin.CustomError{Code: 1000015, Msg: "禁止刷新可用的Token"}
 	//auth相关
 	NotResourcePower     = &gin.CustomError{Code: 4003, Msg: "暂无接口资源权限"}
 	TokenExpiredError    = &gin.CustomError{Code: 4001, Msg: "登陆信息已过期，请重新登陆"}

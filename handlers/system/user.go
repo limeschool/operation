@@ -119,6 +119,14 @@ func RefreshToken(ctx *gin.Context) {
 	}
 }
 
+func UserLogout(ctx *gin.Context) {
+	if err := service.UserLogout(ctx); err != nil {
+		ctx.RespError(err)
+	} else {
+		ctx.RespSuccess()
+	}
+}
+
 // UserMenus 获取用户的菜单列表
 func UserMenus(ctx *gin.Context) {
 	if tree, err := service.CurUserMenuTree(ctx); err != nil {

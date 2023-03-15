@@ -145,6 +145,14 @@ func DeleteUser(ctx *gin.Context, in *types.DeleteUserRequest) error {
 	return user.DeleteByID(ctx, in.ID)
 }
 
+func UserLogout(ctx *gin.Context) error {
+	metadata, err := meta.Get(ctx)
+	if err != nil {
+		return err
+	}
+	return middlewares.JwtAuth.ClearToken(ctx, metadata.UserID)
+}
+
 func UserLogin(ctx *gin.Context, in *types.UserLoginRequest) (resp *types.UserLoginResponse, err error) {
 	// 记录登陆日志
 	resp = new(types.UserLoginResponse)
@@ -219,21 +227,33 @@ func UserLogin(ctx *gin.Context, in *types.UserLoginRequest) (resp *types.UserLo
 		RoleID:    user.RoleID,
 		RoleKey:   user.Role.Keyword,
 		DataScope: user.Role.DataScope,
+		Username:  user.Name,
 		TeamID:    user.TeamID,
 	}); err != nil {
 		return nil, err
 	}
+
+	// 将用户的token信息写入redis
 
 	// 修改登陆时间
 	return resp, user.UpdateLastLogin(ctx, time.Now().Unix())
 }
 
 func RefreshToken(ctx *gin.Context) (*types.UserLoginResponse, error) {
-	if middlewares.JwtAuth.IsExpired(ctx) {
+	claims, expired, maxExpired := middlewares.JwtAuth.MapClaimsAndExpired(ctx)
+	if claims == nil {
+		return nil, errors.TokenDataError
+	}
+
+	if !expired {
+		return nil, errors.RefreshActiveTokenError
+	}
+
+	if maxExpired {
 		return nil, errors.TokenExpiredError
 	}
 
-	metadata, err := meta.Get(ctx)
+	metadata, err := meta.Parse(claims)
 	if err != nil {
 		return nil, err
 	}
