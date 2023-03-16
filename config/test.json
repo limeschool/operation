@@ -28,7 +28,7 @@
       "enable": true,
       "drive": "mysql",
       "name": "operation",
-      "dsn": "root:root@tcp(127.0.0.1:3306)/operation?charset=utf8mb4&parseTime=True&loc=Local"
+      "dsn": "operation:MR44iNkT6b5hp8Hf@tcp(127.0.0.1:3306)/operation?charset=utf8mb4&parseTime=True&loc=Local"
     }
   ],
   "redis": [
@@ -44,6 +44,7 @@
     "expire": 7200,
     "max_expire": 172800,
     "secret": "limeschool",
+    "store": "redis",
     "whitelist": {
       "post:/api/system/user/login": true,
       "post:/api/system/token/refresh": true,
@@ -65,5 +66,9 @@
   "rbac": {
     "enable": true,
     "db": "operation"
+  },
+  "captcha": {
+    "store": "redis",
+    "expire": "30s"
   }
 }
