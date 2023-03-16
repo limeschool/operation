@@ -11,6 +11,14 @@ import (
 	"time"
 )
 
+func ClientIP(ctx *gin.Context) string {
+	ip := ctx.ClientIP()
+	if ip == "::1" {
+		ip = ctx.GetHeader("X-Real-IP")
+	}
+	return ip
+}
+
 func DataDup(err error) bool {
 	if err == nil {
 		return false

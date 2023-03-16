@@ -4,13 +4,14 @@ import (
 	"github.com/limeschool/gin"
 	"operation/models"
 	model "operation/models/system"
+	"operation/tools"
 	"operation/tools/address"
 	"operation/tools/ua"
 	types "operation/types/system"
 )
 
 func AddLoginLog(ctx *gin.Context, phone string, err error) error {
-	ip := ctx.RemoteIP()
+	ip := tools.ClientIP(ctx)
 	userAgent := ctx.Request.Header.Get("User-Agent")
 	info := ua.Parse(userAgent)
 	desc := ""
