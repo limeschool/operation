@@ -12,6 +12,7 @@ import (
 	"operation/models"
 	model "operation/models/system"
 	"operation/tools"
+	ct "operation/tools/captcha"
 	"operation/tools/tree"
 	types "operation/types/system"
 	"time"
@@ -164,7 +165,7 @@ func UserLogin(ctx *gin.Context, in *types.UserLoginRequest) (resp *types.UserLo
 	}()
 
 	if middlewares.JwtAuth.Captcha {
-		if !NewCaptchaStore(ctx).Verify(in.CaptchaID, in.Captcha, true) {
+		if !ct.Store.Verify(in.CaptchaID, in.Captcha, true) {
 			err = errors.CaptchaError
 			return
 		}
@@ -193,6 +194,7 @@ func UserLogin(ctx *gin.Context, in *types.UserLoginRequest) (resp *types.UserLo
 	// 通过手机号获取用户信息
 	user := model.User{}
 	if err = user.OneByPhone(ctx, in.Phone); err != nil {
+		err = errors.UserNotFoundError
 		return
 	}
 

@@ -4,6 +4,7 @@ import (
 	"github.com/limeschool/gin"
 	"github.com/spf13/viper"
 	"operation/middlewares"
+	"operation/tools/captcha"
 	"operation/tools/upload"
 )
 
@@ -16,5 +17,8 @@ func InitConfig() {
 
 		// 初始化upload信息
 		upload.InitUploadConfig(v)
+
+		// 初始化验证器
+		captcha.InitStore(v)
 	})
 }
