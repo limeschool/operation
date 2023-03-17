@@ -136,4 +136,4 @@ require (
 	modernc.org/sqlite v1.21.0 // indirect
 )
 
-//replace github.com/limeschool/gin v0.0.19 => ../src/github.com/limeschool/gin
+replace github.com/limeschool/gin v0.0.21 => ../src/github.com/limeschool/gin

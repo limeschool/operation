@@ -19,15 +19,14 @@ var (
 )
 
 type JwtAuthApplication struct {
-	Enable       bool            `json:"enable" mapstructure:"enable"` //是否启用
-	Header       string          `json:"header" mapstructure:"header"`
-	Captcha      bool            `json:"captcha" mapstructure:"captcha"`
-	UniqueDevice bool            `json:"unique_device" mapstructure:"unique_device"` //是否启用唯一设备登陆
-	UniqueCache  string          `json:"unique_cache" mapstructure:"unique_cache"`   //唯一设备登陆的缓存器
-	Expire       int64           `json:"expire" mapstructure:"expire"`
-	MaxExpire    int64           `json:"max_expire" mapstructure:"max_expire"`
-	Secret       string          `json:"secret" mapstructure:"secret"`
-	Whitelist    map[string]bool `json:"whitelist" mapstructure:"whitelist"`
+	Enable       bool   `json:"enable" mapstructure:"enable"` //是否启用
+	Header       string `json:"header" mapstructure:"header"`
+	Captcha      bool   `json:"captcha" mapstructure:"captcha"`
+	UniqueDevice bool   `json:"unique_device" mapstructure:"unique_device"` //是否启用唯一设备登陆
+	UniqueCache  string `json:"unique_cache" mapstructure:"unique_cache"`   //唯一设备登陆的缓存器
+	Expire       int64  `json:"expire" mapstructure:"expire"`
+	MaxExpire    int64  `json:"max_expire" mapstructure:"max_expire"`
+	Secret       string `json:"secret" mapstructure:"secret"`
 }
 
 func NewJwt(v *viper.Viper) {
@@ -77,15 +76,11 @@ func (ja *JwtAuthApplication) ClearToken(ctx *gin.Context, userId int64) error {
 
 func (ja *JwtAuthApplication) Auth() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		if !ja.Enable {
-			return
-		}
-
 		path := ctx.FullPath()
 		method := ctx.Request.Method
 
 		// 判断是否在白名单内
-		if ja.isWhitelist(path, method) {
+		if ctx.Rbac().IsWhiteList(strings.ToLower(method + ":" + path)) {
 			return
 		}
 
@@ -120,7 +115,7 @@ func (ja *JwtAuthApplication) Auth() gin.HandlerFunc {
 		// 忽略超级管理员
 		if metadata.RoleKey != consts.JwtSuperAdmin && !ja.isBaseApi(ctx, method, path) {
 			// 进行权限认证
-			if is, _ := ctx.Rbac().Enforce(metadata.RoleKey, path, method); !is {
+			if is, _ := ctx.Rbac().Object().Enforce(metadata.RoleKey, path, method); !is {
 				ctx.RespError(errors.NotResourcePower)
 				return
 			}
@@ -134,14 +129,6 @@ func (ja *JwtAuthApplication) Auth() gin.HandlerFunc {
 func (ja *JwtAuthApplication) isBaseApi(ctx *gin.Context, method, path string) bool {
 	menu := model.Menu{}
 	return menu.GetBaseApiPath(ctx)[method+":"+path]
-}
-
-func (ja *JwtAuthApplication) isWhitelist(path, method string) bool {
-	if path == "/healthy" {
-		return true
-	}
-	key := strings.ToLower(method + ":" + path)
-	return ja.Whitelist[key] == true
 }
 
 func (ja *JwtAuthApplication) parseToken(token string) (map[string]any, error) {

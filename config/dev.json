@@ -5,15 +5,15 @@
       "get:/auth": true
     },
     "timeout": "20s",
-    "validator": {
-      "enable": true,
-      "default": "zh"
+    "validator_i18n": {
+      "default": "zh",
+      "header": "x-language"
+    },
+    "log": {
+      "level": 0,
+      "trace_key": "log-id",
+      "service_key": "service"
     }
-  },
-  "log": {
-    "level": 0,
-    "trace_key": "log-id",
-    "service_key": "service"
   },
   "request": {
     "enable_log": true,
@@ -39,33 +39,29 @@
     }
   ],
   "jwt": {
-    "enable": true,
     "captcha": true,
     "expire": 7200,
     "max_expire": 172800,
     "secret": "limeschool",
-    "store": "redis",
-    "whitelist": {
-      "post:/api/system/user/login": true,
-      "post:/api/system/token/refresh": true,
-      "post:/api/system/captcha": true
-    }
+    "store": "redis"
   },
   "rsa": [
     {
-      "enable": true,
       "name": "private",
       "path": "cert/private.pem"
     },
     {
-      "enable": true,
       "name": "public",
       "path": "cert/public.pem"
     }
   ],
   "rbac": {
-    "enable": true,
-    "db": "operation"
+    "db": "operation",
+    "whitelist": {
+      "post:/api/system/user/login": true,
+      "post:/api/system/token/refresh": true,
+      "post:/api/system/captcha": true
+    }
   },
   "captcha": {
     "store": "redis",

@@ -27,7 +27,7 @@ func UpdateRoleMenu(ctx *gin.Context, in *types.AddRoleMenuRequest) error {
 	}
 
 	// 删除当前用户的全部rbac权限
-	_, _ = ctx.Rbac().RemoveFilteredPolicy(0, role.Keyword)
+	_, _ = ctx.Rbac().Object().RemoveFilteredPolicy(0, role.Keyword)
 
 	// 获取当前修改菜单的信息
 	menu := model.Menu{}
@@ -38,7 +38,7 @@ func UpdateRoleMenu(ctx *gin.Context, in *types.AddRoleMenuRequest) error {
 	}
 
 	// 将新的策略的策略写入rbac
-	_, _ = ctx.Rbac().AddPolicies(policies)
+	_, _ = ctx.Rbac().Object().AddPolicies(policies)
 
 	return nil
 }

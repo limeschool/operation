@@ -68,7 +68,7 @@ func DeleteRole(ctx *gin.Context, in *types.DeleteRoleRequest) error {
 	if err := role.OneByID(ctx, in.ID); err != nil {
 		return err
 	}
-	_, _ = ctx.Rbac().RemoveFilteredPolicy(0, role.Keyword)
+	_, _ = ctx.Rbac().Object().RemoveFilteredPolicy(0, role.Keyword)
 
 	return role.DeleteByID(ctx, in.ID)
 }

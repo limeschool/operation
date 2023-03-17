@@ -52,18 +52,18 @@ func UpdateMenu(ctx *gin.Context, in *types.UpdateMenuRequest) error {
 
 	// 之前为接口，现在修改类型不为接口，则删除之前的rbac数据
 	if menu.Type == "A" && in.Type != "A" {
-		_, _ = ctx.Rbac().RemoveFilteredPolicy(1, menu.Path, menu.Method)
+		_, _ = ctx.Rbac().Object().RemoveFilteredPolicy(1, menu.Path, menu.Method)
 	}
 
 	// 之前和现在都为接口，且存在方法或者路径变更时则更新rbac数据
 	if menu.Type == "A" && in.Type == "A" && (menu.Method != in.Method || menu.Path != in.Path) {
-		oldPolices := ctx.Rbac().GetFilteredPolicy(1, menu.Path, menu.Method)
+		oldPolices := ctx.Rbac().Object().GetFilteredPolicy(1, menu.Path, menu.Method)
 		if len(oldPolices) != 0 {
 			var newPolices [][]string
 			for _, val := range oldPolices {
 				newPolices = append(newPolices, []string{val[0], in.Path, in.Method})
 			}
-			_, _ = ctx.Rbac().UpdatePolicies(oldPolices, newPolices)
+			_, _ = ctx.Rbac().Object().UpdatePolicies(oldPolices, newPolices)
 		}
 	}
 
@@ -87,7 +87,7 @@ func UpdateMenu(ctx *gin.Context, in *types.UpdateMenuRequest) error {
 			for _, val := range roles {
 				newPolices = append(newPolices, []string{val.Keyword, in.Path, in.Method})
 			}
-			_, _ = ctx.Rbac().AddPolicies(newPolices)
+			_, _ = ctx.Rbac().Object().AddPolicies(newPolices)
 		}
 	}
 
@@ -114,7 +114,7 @@ func DeleteMenu(ctx *gin.Context, in *types.DeleteMenuRequest) error {
 	// 删除当前id中的类型为api的rbac权限表
 	apiList, _ := menu.All(ctx, "id in ? and type='A'", ids)
 	for _, item := range apiList {
-		_, _ = ctx.Rbac().RemoveFilteredPolicy(1, item.Path, item.Method)
+		_, _ = ctx.Rbac().Object().RemoveFilteredPolicy(1, item.Path, item.Method)
 	}
 
 	// 从数据库删除菜单
