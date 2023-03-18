@@ -12,3 +12,11 @@ func Captcha(ctx *gin.Context) {
 		ctx.RespData(resp)
 	}
 }
+
+func EmailCaptcha(ctx *gin.Context) {
+	if resp, err := service.EmailCaptcha(ctx); err != nil {
+		ctx.RespError(err)
+	} else {
+		ctx.RespData(resp)
+	}
+}

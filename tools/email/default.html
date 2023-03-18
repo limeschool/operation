@@ -1,0 +1,23 @@
+<div style="margin:auto;max-width: 700px;">
+    <div style="padding:10px 0; margin:0 10px; display: flex;align-items: center; ">
+        <image src="{{.Logo}}" width='35px' height='35px'/>
+        <span style="margin: 0 10px;font-size: 20px; font-weight: 700;">{{.Title}}</span>
+    </div>
+    <div style="box-sizing: border-box;min-height: 100px;padding:15px;margin:0 10px 5px 10px; line-height: 24px; text-align: justify; border-top: 2px solid #1e90ff; background-color: #fefefe;box-shadow: 0 1px 8px rgba(0,0,0,0.1);">
+        <div style="font-size:16px;white-space: normal;margin: 0px;padding: 0px;box-sizing: border-box;">
+            {{.Content}}
+        </div>
+    </div>
+    <div style="font-size:12px;text-align: center;line-height:24px;color: #76808E;text-decoration: none;margin-top: 20px;">
+        {{.Desc}}<br/>
+
+        <image src="{{.Qrcode}}" style="border-radius: 4px;width: 180px;height: 180px; display: block; margin: auto;"/>
+        手机扫一扫，关注公众号<br/>
+        Copyright © {{.Footer}}<br/>
+        <div>
+            <span>联系电话：<span style="color:#1E9FFF;">{{.Phone}}</span> </span>
+            <span style="margin-left: 5px;margin-right: 5px;">|</span>
+            <span>电子邮箱：<span style="color:#1E9FFF;">{{.Email}}</span></span>
+        </div>
+    </div>
+</div>

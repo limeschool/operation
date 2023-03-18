@@ -3,13 +3,23 @@ package tools
 import (
 	"github.com/limeschool/gin"
 	"golang.org/x/crypto/bcrypt"
+	"math"
+	"math/rand"
 	"operation/consts"
 	"os"
 	"reflect"
 	"regexp"
+	"strconv"
 	"strings"
 	"time"
 )
+
+func CreateCode(len int) string {
+	//初始化随机数
+	rand.Seed(time.Now().Unix())
+	var code = rand.Intn(int(math.Pow10(len)) - int(math.Pow10(len-1)))
+	return strconv.Itoa(code + int(math.Pow10(len-1)))
+}
 
 func ClientIP(ctx *gin.Context) string {
 	ip := ctx.ClientIP()

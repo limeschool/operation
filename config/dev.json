@@ -65,6 +65,22 @@
   },
   "captcha": {
     "store": "redis",
-    "expire": "30s"
+    "expire": "3m"
+  },
+  "email": {
+    "templates": {
+      "default": "tools/email/default.html"
+    },
+    "length": 6,
+    "user":"860808187@qq.com",
+    "host": "smtp.qq.com:25",
+    "password":"ersukmsstobebdef",
+    "footer": "2023 qlime.cn. All rights reserved.",
+    "title": "青柠校园",
+    "qrcode": "https://img.zcool.cn/community/013f58600db17c11013e3991894384.png?x-oss-process=image/auto-orient,1/resize,m_lfit,w_1280,limit_1/sharpen,100",
+    "phone": "18286219254",
+    "email": "1280291001@qq.com",
+    "desc": "如您对青柠校园的使用有任何疑问, 请随时与我们联系。",
+    "logo": "https://img1.baidu.com/it/u=3140984998,2040698442&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"
   }
 }

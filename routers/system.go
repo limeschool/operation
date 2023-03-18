@@ -14,6 +14,9 @@ func UseSystemRouter(root *gin.RouterGroup) {
 		//文件上传相关
 		api.POST("/upload", system.UploadFile)
 
+		//发送邮箱验证码
+		api.POST("/email/captcha", system.EmailCaptcha)
+
 		// 菜单相关
 		api.GET("/menus", system.AllMenu)
 		api.POST("/menu", system.AddMenu)
@@ -41,6 +44,8 @@ func UseSystemRouter(root *gin.RouterGroup) {
 		api.GET("/user", system.CurUser)
 		api.POST("/user", system.AddUser)
 		api.PUT("/user", system.UpdateUser)
+		api.PUT("/user/password", system.UpdatePassword)
+		api.PUT("/user/info", system.UpdateUserinfo)
 		api.DELETE("/user", system.DeleteUser)
 		api.GET("/user/menus", system.UserMenus)
 

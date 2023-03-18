@@ -5,6 +5,7 @@ import (
 	"github.com/spf13/viper"
 	"operation/middlewares"
 	"operation/tools/captcha"
+	"operation/tools/email"
 	"operation/tools/upload"
 )
 
@@ -20,5 +21,8 @@ func InitConfig() {
 
 		// 初始化验证器
 		captcha.InitStore(v)
+
+		// 初始化邮箱发送器
+		email.InitEmail(v)
 	})
 }

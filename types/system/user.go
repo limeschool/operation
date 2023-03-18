@@ -42,6 +42,12 @@ type UpdateUserRequest struct {
 	Password string `json:"password"`
 }
 
+type UpdateUserinfoRequest struct {
+	Avatar   string `json:"avatar"`
+	Nickname string `json:"nickname"`
+	Sex      *bool  `json:"sex"`
+}
+
 type DeleteUserRequest struct {
 	ID int64 `json:"id"`
 }
@@ -60,4 +66,10 @@ type UserLoginResponse struct {
 type Password struct {
 	Password string `json:"password"`
 	Time     int64  `json:"time"`
+}
+
+type UpdatePasswordRequest struct {
+	Password  string `json:"password"`
+	CaptchaID string `json:"captcha_id"`
+	Captcha   string `json:"captcha"`
 }

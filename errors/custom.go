@@ -19,7 +19,9 @@ var (
 	RoleDisableError        = &gin.CustomError{Code: 1000013, Msg: "账户角色已被禁用"}
 	PasswordExpireError     = &gin.CustomError{Code: 1000014, Msg: "登陆密码时效已过期"}
 	CaptchaError            = &gin.CustomError{Code: 1000015, Msg: "验证码错误"}
-	RefreshActiveTokenError = &gin.CustomError{Code: 1000015, Msg: "禁止刷新可用的Token"}
+	RefreshActiveTokenError = &gin.CustomError{Code: 1000016, Msg: "禁止刷新可用的Token"}
+	CaptchaSendError        = &gin.CustomError{Code: 1000016, Msg: "禁止刷新可用的Token"}
+
 	//auth相关
 	NotResourcePower     = &gin.CustomError{Code: 4003, Msg: "暂无接口资源权限"}
 	TokenExpiredError    = &gin.CustomError{Code: 4001, Msg: "登陆信息已过期，请重新登陆"}

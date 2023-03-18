@@ -71,6 +71,10 @@ func (s *captchaStore) Verify(id string, answer string, clear bool) bool {
 	return res == answer
 }
 
-func (s *captchaStore) Duration() time.Duration {
-	return s.duration
+func (s *captchaStore) DurationSecond() int {
+	return int(s.duration / time.Second)
+}
+
+func (s *captchaStore) DurationMinute() int {
+	return int(s.duration / time.Minute)
 }

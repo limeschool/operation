@@ -81,6 +81,36 @@ func UpdateUser(ctx *gin.Context) {
 	}
 }
 
+func UpdateUserinfo(ctx *gin.Context) {
+	// 检验参数
+	in := types.UpdateUserinfoRequest{}
+	if ctx.ShouldBindJSON(&in) != nil {
+		ctx.RespError(errors.ParamsError)
+		return
+	}
+	// 调用实现
+	if err := service.UpdateUserinfo(ctx, &in); err != nil {
+		ctx.RespError(err)
+	} else {
+		ctx.RespSuccess()
+	}
+}
+
+func UpdatePassword(ctx *gin.Context) {
+	// 检验参数
+	in := types.UpdatePasswordRequest{}
+	if ctx.ShouldBindJSON(&in) != nil {
+		ctx.RespError(errors.ParamsError)
+		return
+	}
+	// 调用实现
+	if err := service.UpdatePassword(ctx, &in); err != nil {
+		ctx.RespError(err)
+	} else {
+		ctx.RespSuccess()
+	}
+}
+
 func DeleteUser(ctx *gin.Context) {
 	// 检验参数
 	in := types.DeleteUserRequest{}

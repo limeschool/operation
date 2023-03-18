@@ -84,7 +84,6 @@ func AddUser(ctx *gin.Context, in *types.AddUserRequest) error {
 }
 
 func UpdateUser(ctx *gin.Context, in *types.UpdateUserRequest) error {
-
 	user := model.User{}
 	if user.OneByID(ctx, in.ID) != nil {
 		return errors.DBNotFoundError
@@ -119,6 +118,38 @@ func UpdateUser(ctx *gin.Context, in *types.UpdateUserRequest) error {
 		return errors.AssignError
 	}
 
+	return user.Update(ctx)
+}
+
+func UpdateUserinfo(ctx *gin.Context, in *types.UpdateUserinfoRequest) error {
+	md, err := meta.Get(ctx)
+	if err != nil {
+		return errors.TokenDataError
+	}
+
+	user := model.User{}
+	if err = copier.Copy(&user, in); err != nil {
+		return errors.AssignError
+	}
+	user.ID = md.UserID
+
+	return user.Update(ctx)
+}
+
+func UpdatePassword(ctx *gin.Context, in *types.UpdatePasswordRequest) error {
+	md, err := meta.Get(ctx)
+	if err != nil {
+		return errors.TokenDataError
+	}
+
+	if !ct.Store.Verify(in.CaptchaID, in.Captcha, false) {
+		return errors.CaptchaError
+	}
+	defer ct.Store.Clear(in.CaptchaID)
+
+	user := model.User{}
+	user.ID = md.UserID
+	user.Password, _ = tools.ParsePwd(in.Password)
 	return user.Update(ctx)
 }
 
