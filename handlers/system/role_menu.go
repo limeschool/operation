@@ -32,3 +32,16 @@ func RoleMenuIds(ctx *gin.Context) {
 		ctx.RespData(ids)
 	}
 }
+
+func RoleMenu(ctx *gin.Context) {
+	in := types.RoleMenuRequest{}
+	if err := ctx.ShouldBind(&in); err != nil {
+		ctx.RespError(errors.ParamsError)
+		return
+	}
+	if ids, err := service.RoleMenu(ctx, &in); err != nil {
+		ctx.RespError(err)
+	} else {
+		ctx.RespData(ids)
+	}
+}

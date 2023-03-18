@@ -31,6 +31,7 @@ func UseSystemRouter(root *gin.RouterGroup) {
 
 		// 角色菜单相关
 		api.GET("/role/menu/ids", system.RoleMenuIds)
+		api.GET("/role/menu", system.RoleMenu)
 		api.PUT("/role/menu", system.UpdateRoleMenu)
 
 		// 部门相关

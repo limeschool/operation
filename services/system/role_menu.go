@@ -2,8 +2,10 @@ package system
 
 import (
 	"github.com/limeschool/gin"
+	"operation/consts"
 	"operation/errors"
 	model "operation/models/system"
+	"operation/tools/tree"
 	types "operation/types/system"
 )
 
@@ -60,4 +62,42 @@ func RoleMenuIds(ctx *gin.Context, in *types.RoleMenuIdsRequest) ([]int64, error
 	}
 
 	return ids, nil
+}
+
+func RoleMenu(ctx *gin.Context, in *types.RoleMenuRequest) (tree.Tree, error) {
+	// 查询角色信息
+	role := model.Role{}
+	if err := role.OneByID(ctx, in.RoleID); err != nil {
+		return nil, err
+	}
+
+	if role.Keyword == consts.JwtSuperAdmin {
+		return AllMenu(ctx)
+	}
+
+	// 查询角色所属菜单
+	rm := model.RoleMenu{}
+	rmList, err := rm.RoleMenus(ctx, in.RoleID)
+	if err != nil {
+		return nil, err
+	}
+
+	// 获取菜单的所有id
+	var ids []int64
+	for _, item := range rmList {
+		ids = append(ids, item.MenuID)
+	}
+	if len(ids) == 0 {
+		return nil, nil
+	}
+
+	// 获取指定id的所有菜单
+	var menu model.Menu
+	menuList, _ := menu.All(ctx, "id in ?", ids)
+	var listTree []tree.Tree
+	for _, item := range menuList {
+		listTree = append(listTree, item)
+	}
+
+	return tree.BuildTree(listTree), nil
 }

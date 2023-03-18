@@ -49,15 +49,15 @@ func (u *RoleMenu) Update(ctx *gin.Context, roleId int64, menuIds []int64) error
 }
 
 // RoleMenus 通过角色ID获取角色菜单
-func (u *RoleMenu) RoleMenus(ctx *gin.Context, roleId int64) ([]RoleMenu, error) {
-	var list []RoleMenu
+func (u *RoleMenu) RoleMenus(ctx *gin.Context, roleId int64) ([]*RoleMenu, error) {
+	var list []*RoleMenu
 	db := models.Database(ctx).Table(u.Table())
 	return list, models.TransferErr(db.Find(&list, "role_id=?", roleId).Error)
 }
 
 // MenuRoles 通过菜单ID获取角色菜单列表
-func (u *RoleMenu) MenuRoles(ctx *gin.Context, menuId int64) ([]RoleMenu, error) {
-	var list []RoleMenu
+func (u *RoleMenu) MenuRoles(ctx *gin.Context, menuId int64) ([]*RoleMenu, error) {
+	var list []*RoleMenu
 	db := models.Database(ctx).Table(u.Table())
 	return list, models.TransferErr(db.Find(&list, "menu_id=?", menuId).Error)
 }
