@@ -69,7 +69,7 @@
   },
   "email": {
     "templates": {
-      "default": "tools/email/default.html"
+      "default": "template/default.html"
     },
     "length": 6,
     "user":"860808187@qq.com",
