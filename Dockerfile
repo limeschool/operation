@@ -10,6 +10,7 @@ WORKDIR /go/build
 ADD . .
 RUN GOOS=linux CGO_ENABLED=0 go build -ldflags="-s -w" -installsuffix cgo -o entry main.go
 
+
 FROM alpine
 EXPOSE 8081
 WORKDIR /go/build
