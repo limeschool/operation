@@ -15,4 +15,4 @@ EXPOSE 8081
 WORKDIR /go/build
 COPY ./config /go/build/config
 COPY --from=build /go/build/entry /go/build/entry
-CMD ["./entry","-c","./config/test.json"]
+CMD ["./entry","-c","config/test.json"]
