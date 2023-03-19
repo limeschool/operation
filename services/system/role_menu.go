@@ -71,31 +71,35 @@ func RoleMenu(ctx *gin.Context, in *types.RoleMenuRequest) (tree.Tree, error) {
 		return nil, err
 	}
 
-	if role.Keyword == consts.JwtSuperAdmin {
-		return AllMenu(ctx)
-	}
+	var menus []*model.Menu
 
-	// 查询角色所属菜单
-	rm := model.RoleMenu{}
-	rmList, err := rm.RoleMenus(ctx, in.RoleID)
-	if err != nil {
-		return nil, err
-	}
-
-	// 获取菜单的所有id
-	var ids []int64
-	for _, item := range rmList {
-		ids = append(ids, item.MenuID)
-	}
-	if len(ids) == 0 {
-		return nil, nil
-	}
-
-	// 获取指定id的所有菜单
 	var menu model.Menu
-	menuList, _ := menu.All(ctx, "id in ?", ids)
+
+	if role.Keyword == consts.JwtSuperAdmin {
+		menus, _ = menu.All(ctx, "permission!=?", consts.BaseApi)
+	} else {
+		// 查询角色所属菜单
+		rm := model.RoleMenu{}
+		rmList, err := rm.RoleMenus(ctx, in.RoleID)
+		if err != nil {
+			return nil, err
+		}
+
+		// 获取菜单的所有id
+		var ids []int64
+		for _, item := range rmList {
+			ids = append(ids, item.MenuID)
+		}
+		if len(ids) == 0 {
+			return nil, nil
+		}
+
+		// 获取指定id的所有菜单
+		menus, _ = menu.All(ctx, "id in ? and permission!=?", ids, consts.BaseApi)
+	}
+
 	var listTree []tree.Tree
-	for _, item := range menuList {
+	for _, item := range menus {
 		listTree = append(listTree, item)
 	}
 

@@ -82,5 +82,12 @@
     "email": "1280291001@qq.com",
     "desc": "如您对青柠校园的使用有任何疑问, 请随时与我们联系。",
     "logo": "https://img1.baidu.com/it/u=3140984998,2040698442&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"
+  },
+  "upload": {
+    "drive_type": "local",
+    "local_dir": "static",
+    "accept_types":["jpg","png","jpeg"],
+    "max_size": 500,
+    "rename": true
   }
 }

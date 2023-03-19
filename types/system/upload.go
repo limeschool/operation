@@ -1,5 +1,5 @@
 package system
 
 type UploadRequest struct {
-	Dir string `form:"name"  binding:"required"`
+	Dir string `json:"dir" form:"dir"  binding:"required"`
 }

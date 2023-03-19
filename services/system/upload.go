@@ -65,7 +65,7 @@ func UploadFile(ctx *gin.Context, in *types.UploadRequest) (any, error) {
 }
 
 func uploadFile(fileHeader *multipart.FileHeader, dir string) (string, error) {
-	if upload.Config.MaxSize > 0 && int(fileHeader.Size) > upload.Config.MaxSize {
+	if upload.Config.MaxSize > 0 && int(fileHeader.Size/1024) > upload.Config.MaxSize {
 		return "", errors.FileLimitMaxSizeError
 	}
 

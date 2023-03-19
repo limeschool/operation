@@ -149,7 +149,7 @@ func UpdatePassword(ctx *gin.Context, in *types.UpdatePasswordRequest) error {
 
 	user := model.User{}
 	user.ID = md.UserID
-	user.Password, _ = tools.ParsePwd(in.Password)
+	user.Password = in.Password
 	return user.Update(ctx)
 }
 

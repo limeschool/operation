@@ -27,7 +27,7 @@ type Menu struct {
 	IsCache    *bool   `json:"is_cache"`
 	Operator   string  `json:"operator"`
 	OperatorID int64   `json:"operator_id"`
-	Children   []*Menu `json:"children" gorm:"-"`
+	Children   []*Menu `json:"children,omitempty" gorm:"-"`
 	gin.BaseModel
 }
 
