@@ -20,7 +20,7 @@ var (
 	PasswordExpireError     = &gin.CustomError{Code: 1000014, Msg: "登陆密码时效已过期"}
 	CaptchaError            = &gin.CustomError{Code: 1000015, Msg: "验证码错误"}
 	RefreshActiveTokenError = &gin.CustomError{Code: 1000016, Msg: "禁止刷新可用的Token"}
-	CaptchaSendError        = &gin.CustomError{Code: 1000016, Msg: "禁止刷新可用的Token"}
+	CaptchaSendError        = &gin.CustomError{Code: 1000017, Msg: "邮件发送失败！"}
 
 	//auth相关
 	NotResourcePower     = &gin.CustomError{Code: 4003, Msg: "暂无接口资源权限"}
