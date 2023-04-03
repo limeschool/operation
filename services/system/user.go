@@ -283,7 +283,7 @@ func RefreshToken(ctx *gin.Context) (*types.UserLoginResponse, error) {
 	}
 
 	if maxExpired {
-		return nil, errors.TokenExpiredError
+		return nil, errors.RefTokenExpiredError
 	}
 
 	metadata, err := meta.Parse(claims)
